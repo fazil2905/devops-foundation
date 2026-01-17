@@ -1,4 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+print("Starting application")
+
+print("Starting application")
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -11,3 +14,6 @@ class Handler(BaseHTTPRequestHandler):
 server = HTTPServer(("0.0.0.0", 8080), Handler)
 print("App running on port 8080", flush=True)
 server.serve_forever()
+
+if __name__ == "__main__":
+    print("App encryption OK")
