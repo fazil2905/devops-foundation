@@ -1,3 +1,4 @@
+import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 print("Starting application")
 
