@@ -117,3 +117,57 @@ The CI pipeline now:
 
 The system recovered cleanly and remained stable after the fix.
 
+---
+
+## Phase 2.3 – Slow CI Pipeline (Artificial Delay)
+
+### Failure Injected
+An artificial delay was intentionally introduced into the CI pipeline
+to simulate a slow build process.
+
+The pipeline continued to succeed, but feedback to developers
+was significantly delayed.
+
+---
+
+### Detection
+- Detected by: Manual observation
+- Detection point: CI execution duration in GitHub Actions
+- Signal: Pipeline step taking significantly longer than expected
+
+---
+
+### Time Metrics
+- Time to detect: Immediate
+- Time to recover: ~2 minutes
+
+---
+
+### Root Cause
+A non-essential blocking step was added to the CI workflow,
+introducing latency without providing validation or safety benefits.
+
+This increased pipeline duration while delivering no additional value.
+
+---
+
+### Fix Applied
+The artificial delay was removed from the CI workflow.
+
+Pipeline execution time returned to normal without
+impacting build correctness or reliability.
+
+---
+
+### Prevention / Optimization
+- Treat slow pipelines as reliability issues
+- Keep CI feedback fast to encourage frequent commits
+- Review pipeline steps for unnecessary blocking behavior
+
+---
+
+### Outcome
+CI feedback speed was restored.
+
+Developer feedback loops improved, and the pipeline
+returned to a fast, predictable execution time.
