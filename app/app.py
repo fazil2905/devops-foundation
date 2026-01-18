@@ -1,5 +1,6 @@
-import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import os
+THIS_WILL_BREAK
 print("Starting application")
 
 print("Starting application")
