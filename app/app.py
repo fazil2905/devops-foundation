@@ -1,5 +1,5 @@
-import sys
 import os
+
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 print("Starting application")
@@ -16,8 +16,6 @@ class Handler(BaseHTTPRequestHandler):
 
 server = HTTPServer(("0.0.0.0", 8080), Handler)
 print("App running on port 8080", flush=True)
-
-sys.exit(1)
 
 if os.getenv("CI") == "true":
     print("CI sanity check passed, exiting cleanly")
