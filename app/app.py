@@ -1,6 +1,6 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
-THIS_WILL_BREAK
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
 print("Starting application")
 
 print("Starting application")
