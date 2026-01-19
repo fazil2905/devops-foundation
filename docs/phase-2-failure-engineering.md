@@ -171,3 +171,61 @@ CI feedback speed was restored.
 
 Developer feedback loops improved, and the pipeline
 returned to a fast, predictable execution time.
+
+---
+
+## Phase 2.4 – Broken Docker Build (Invalid Build Context)
+
+### Failure Injected
+The Docker build was intentionally broken by modifying the `Dockerfile`
+to reference a non-existent file during the `COPY` step.
+
+This caused the Docker image build to fail during the CI pipeline.
+
+---
+
+### Detection
+- Detected by: CI pipeline (GitHub Actions)
+- Detection point: Docker build step
+- Signal: Docker build error indicating missing file in build context
+
+---
+
+### Time Metrics
+- Time to detect: ~5–10 seconds
+- Time to recover: ~5 minutes
+
+---
+
+### Root Cause
+The Dockerfile assumed the presence of a file (`app/main.py`)
+that did not exist in the repository.
+
+This created a mismatch between the application structure
+and the Docker build context.
+
+---
+
+### Fix Applied
+The Dockerfile was updated to reference the correct application path.
+
+The build context and Dockerfile were aligned with
+the actual repository structure.
+
+The CI pipeline was re-run and completed successfully.
+
+---
+
+### Prevention / Optimization
+- Keep Dockerfiles tightly aligned with repository structure
+- Treat Docker build failures as first-class CI failures
+- Prefer explicit paths over assumptions in build steps
+
+---
+
+### Outcome
+The CI pipeline correctly detected the broken Docker build
+and prevented an invalid image from being produced.
+
+After the fix, Docker builds became reliable and predictable.
+
