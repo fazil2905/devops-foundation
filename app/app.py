@@ -1,4 +1,5 @@
 import os
+import random
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -18,6 +19,9 @@ server = HTTPServer(("0.0.0.0", 8080), Handler)
 print("App running on port 8080", flush=True)
 
 if os.getenv("CI") == "true":
-    print("CI sanity check passed, exiting cleanly")
-else:
-    server.serve_forever()
+    if random.choice([True, False]):
+        print("CI sanity check passed")
+        exit(0)
+    else:
+        print("CI sanity check failed randomly")
+        exit(1)
