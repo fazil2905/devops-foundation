@@ -229,3 +229,61 @@ and prevented an invalid image from being produced.
 
 After the fix, Docker builds became reliable and predictable.
 
+---
+
+## Phase 2.5 – Flaky CI Behaviour
+
+### Failure Injected
+Non-deterministic behavior was intentionally introduced into the CI pipeline,
+causing the same code to sometimes pass and sometimes fail without changes.
+
+This resulted in inconsistent CI outcomes across multiple runs.
+
+---
+
+### Detection
+- Detected by: Re-running the same CI workflow
+- Detection point: Python sanity test step
+- Signal: Identical commits producing different CI results (pass/fail)
+
+---
+
+### Time Metrics
+- Time to detect: Immediate after re-runs
+- Time to recover: ~5 minutes
+
+---
+
+### Root Cause
+The CI sanity test contained non-deterministic logic.
+
+Pipeline success depended on runtime conditions rather than
+explicit, repeatable validation rules.
+
+This made CI behavior unreliable and unpredictable.
+
+---
+
+### Fix Applied
+The non-deterministic logic was removed.
+
+CI validation was made deterministic so that:
+- The same code always produces the same result
+- CI outcomes depend only on code changes
+
+---
+
+### Prevention / Optimization
+- Ensure CI tests are deterministic
+- Avoid randomness or timing-based logic in pipelines
+- Treat flaky CI as a reliability incident, not a minor bug
+- Prefer clear failures over intermittent ones
+
+---
+
+### Outcome
+CI behavior became stable and predictable.
+
+Developer trust in the pipeline was restored,
+and failures once again reliably indicated real problems.
+
