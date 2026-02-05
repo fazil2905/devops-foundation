@@ -14,7 +14,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(b"Hello from DevOps Foundation")
 
 
-server = HTTPServer(("0.0.0.0", 9999), Handler)
+server = HTTPServer(("0.0.0.0", 8080), Handler)
 print("App running on port 8080", flush=True)
 
 if os.getenv("CI") == "true":

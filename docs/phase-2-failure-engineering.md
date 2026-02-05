@@ -287,3 +287,58 @@ CI behavior became stable and predictable.
 Developer trust in the pipeline was restored,
 and failures once again reliably indicated real problems.
 
+---
+
+## Phase 2.6 – Incorrect Port Configuration
+
+### Failure Injected
+The application was configured to listen on one port
+while logging a different port number at startup.
+
+The server was running, but users could not access it
+using the logged port.
+
+---
+
+### Detection
+- Detected by: Manual testing in browser
+- Detection point: Attempting to access logged port
+- Signal: Service unreachable despite app running
+
+---
+
+### Time Metrics
+- Time to detect: ~2 minutes
+- Time to recover: ~5 minutes
+
+---
+
+### Root Cause
+Mismatch between the configured server port
+and the port printed in application logs.
+
+This created misleading observability.
+
+---
+
+### Fix Applied
+The server port configuration and log message
+were aligned to use the same port.
+
+Application became accessible immediately.
+
+---
+
+### Prevention / Optimization
+- Keep configuration and logs consistent
+- Treat logs as part of system reliability
+- Validate port bindings during testing
+
+---
+
+### Outcome
+Application accessibility restored.
+
+This highlighted that incorrect logging
+can be an operational failure even
+when the system is technically running.
