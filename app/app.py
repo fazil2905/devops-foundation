@@ -1,6 +1,4 @@
 import os
-import sys
-sys.exit(1)  # Simulate a failure in the application
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 

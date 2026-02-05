@@ -342,3 +342,55 @@ Application accessibility restored.
 This highlighted that incorrect logging
 can be an operational failure even
 when the system is technically running.
+
+---
+
+## Phase 2.7 – Container Crash on Startup
+
+### Failure Injected
+The application was intentionally forced to exit
+immediately at startup using `sys.exit(1)`.
+
+This simulated a container that starts and
+crashes instantly.
+
+---
+
+### Detection
+- Detected by: CI pipeline
+- Detection point: Python sanity test
+- Signal: Immediate exit with code 1
+
+---
+
+### Time Metrics
+- Time to detect: Immediate
+- Time to recover: ~3 minutes
+
+---
+
+### Root Cause
+Application terminated itself during initialization,
+preventing the server from starting.
+
+---
+
+### Fix Applied
+The forced exit was removed.
+
+The application resumed normal startup behavior.
+
+---
+
+### Prevention / Optimization
+- Avoid early exits in startup logic
+- Validate startup paths in CI
+- Treat crash loops as critical failures
+
+---
+
+### Outcome
+Application stability restored.
+
+This demonstrated how startup crashes
+lead to container restart loops in production.
