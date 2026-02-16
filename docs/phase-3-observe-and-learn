@@ -1,0 +1,63 @@
+## Phase 3.1 – Basic Application Logging
+
+### Change Introduced
+Basic structured logging was introduced into the application using Python’s built-in logging module.
+
+Logging was configured with timestamps, log levels, and clear message formatting.
+
+The application now logs:
+- Application startup events
+- Incoming HTTP requests
+- Client IP and port information
+
+---
+
+### Detection
+- Detected by: Manual observation during local runtime
+- Detection point: Application console output
+- Signal: Timestamped log entries for startup and requests
+
+---
+
+### Time Metrics
+- Time to implement: ~10–15 minutes
+- Time to verify: ~5 minutes
+
+---
+
+### Root Cause
+Previously, the application relied on simple print statements.
+
+This provided no structured visibility into runtime behavior and made it difficult to trace activity or diagnose issues.
+
+---
+
+### Fix Applied
+The Python logging module was configured with:
+- INFO log level
+- Timestamped log format
+- Structured log messages
+
+Startup events and request handling were instrumented with logging statements.
+
+---
+
+### Prevention / Optimization
+- Prefer structured logs over print statements
+- Always include timestamps and log levels
+- Treat logging as a core system feature, not an afterthought
+
+---
+
+### Outcome
+The system now provides runtime visibility.
+
+Application behavior can be observed in real time, including:
+- When the app starts
+- When requests are received
+- Where requests originate from
+
+This establishes the foundation for deeper observability in future phases (metrics and alerts).
+
+---
+
