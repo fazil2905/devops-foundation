@@ -61,3 +61,65 @@ This establishes the foundation for deeper observability in future phases (metri
 
 ---
 
+## Phase 3.2 – Basic Runtime Metrics (Request Counter)
+
+### Change Introduced
+A basic runtime metric was introduced by adding a request counter to the application.
+
+The system now tracks:
+- Total number of HTTP requests served
+- Per-request activity during runtime
+
+The counter increments on every incoming GET request.
+
+---
+
+### Detection
+- Detected by: Manual observation during local runtime
+- Detection point: Application console output
+- Signal: Increasing request count logged after each browser refresh
+
+---
+
+### Time Metrics
+- Time to implement: ~10 minutes
+- Time to verify: ~5 minutes
+
+---
+
+### Root Cause
+Previously, the application only logged events but did not measure behavior.
+
+There was no way to quantify traffic volume or observe request growth over time.
+
+This limited operational insight into application usage patterns.
+
+---
+
+### Fix Applied
+A global request counter variable was introduced.
+
+Inside the request handler:
+- The counter increments on every GET request
+- The updated total is logged after each request
+
+This provides a simple runtime metric without external tooling.
+
+---
+
+### Prevention / Optimization
+- Track measurable behavior, not just events
+- Instrument request paths with lightweight metrics
+- Use logging temporarily before introducing full metrics systems
+
+---
+
+### Outcome
+The system now provides:
+
+- Structured logging (Phase 3.1)
+- A measurable runtime metric (Phase 3.2)
+
+Application behavior can now be quantified in real time.
+
+This marks the transition from basic logging to behavioral observability.
