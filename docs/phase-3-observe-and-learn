@@ -123,3 +123,64 @@ The system now provides:
 Application behavior can now be quantified in real time.
 
 This marks the transition from basic logging to behavioral observability.
+
+---
+
+## Phase 3.3 – Health Endpoint
+
+### Change Introduced
+A dedicated `/health` endpoint was introduced to expose application health status.
+
+This endpoint allows external systems to verify whether the application is healthy and responsive.
+
+---
+
+### Detection
+- Detected by: Manual testing via browser
+- Detection point: HTTP response from `/health`
+- Signal: 200 OK response with body "OK"
+
+---
+
+### Time Metrics
+- Time to implement: ~10 minutes
+- Time to verify: ~5 minutes
+
+---
+
+### Root Cause
+Previously, there was no way to programmatically determine application health.
+
+The system relied solely on process existence and manual observation.
+
+This made automated health verification impossible.
+
+---
+
+### Fix Applied
+A `/health` route was added inside the request handler.
+
+The endpoint:
+- Returns HTTP 200 when healthy
+- Does not increment request metrics
+- Logs health check activity
+
+Health traffic is separated from normal user traffic.
+
+---
+
+### Prevention / Optimization
+- Always expose a health endpoint in production services
+- Separate health probes from user request metrics
+- Ensure health checks are lightweight and fast
+
+---
+
+### Outcome
+The application now provides:
+
+- Structured logs (Phase 3.1)
+- Runtime metrics (Phase 3.2)
+- A health verification endpoint (Phase 3.3)
+
+The service is now monitorable by infrastructure systems such as load balancers and orchestrators.

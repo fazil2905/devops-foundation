@@ -14,6 +14,15 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         global REQUEST_COUNT
 
+        # Health endpoint
+        if self.path == "/health":
+            logging.info("Health check requested")
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"OK")
+            return
+
+        # Normal request handling
         REQUEST_COUNT += 1
 
         logging.info(f"Received GET request from {self.client_address}")
@@ -22,6 +31,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b"Hello from DevOps Foundation")
+    
 
 
 logging.info("Application starting...")
