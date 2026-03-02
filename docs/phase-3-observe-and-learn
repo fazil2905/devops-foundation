@@ -256,3 +256,83 @@ The system now provides:
 - Degradation awareness via uptime and load signals (Phase 3.4)
 
 The application can now distinguish between healthy, busy, and potentially degrading states.
+
+---
+
+## Phase 3.5 – Simulated Unhealthy State & Degradation Detection
+
+### Change Introduced
+An unhealthy state simulation was introduced to validate observability signals.
+
+The system now:
+- Tracks a health state variable (`APP_HEALTHY`)
+- Automatically transitions to an unhealthy state when request load exceeds a defined threshold
+- Returns HTTP 500 from the `/health` endpoint when unhealthy
+- Emits ERROR-level logs during degradation
+
+---
+
+### Detection
+- Detected by: Manual load simulation via repeated browser refresh
+- Detection point: `/health` endpoint response and console logs
+- Signal:
+  - ERROR logs indicating unhealthy state
+  - `/health` returning HTTP 500
+  - Response body showing "UNHEALTHY"
+
+---
+
+### Time Metrics
+- Time to implement: ~15 minutes
+- Time to verify: ~10 minutes
+
+---
+
+### Root Cause
+Previously, the system could detect increased traffic volume but could not transition into a degraded or unhealthy state.
+
+There was no mechanism to:
+- Escalate from warning to failure
+- Reflect operational stress in health checks
+- Simulate infrastructure removal conditions
+
+This limited realism in the observability model.
+
+---
+
+### Fix Applied
+The application was enhanced to:
+
+- Introduce a global health state flag (`APP_HEALTHY`)
+- Automatically mark the system unhealthy when request count exceeds threshold
+- Return HTTP 500 from `/health` when unhealthy
+- Emit ERROR-level logs when degradation occurs
+
+This allows infrastructure-level health validation.
+
+---
+
+### Prevention / Optimization
+- Distinguish between healthy, degraded, and unhealthy states
+- Emit clear signals before catastrophic failure
+- Ensure health endpoints reflect real operational state
+- Simulate production-style overload behavior during testing
+
+---
+
+### Outcome
+The system now provides:
+
+- Structured logs (Phase 3.1)
+- Runtime metrics (Phase 3.2)
+- Health endpoint (Phase 3.3)
+- Degradation detection (Phase 3.4)
+- Automatic unhealthy state transition (Phase 3.5)
+
+The application can now:
+- Detect load increase
+- Escalate to warning
+- Transition to unhealthy state
+- Emit correct health signals
+
+This completes the core observability objective of Phase 3. 

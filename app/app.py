@@ -7,6 +7,7 @@ START_TIME = time.time()
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 REQUEST_COUNT = 0
+APP_HEALTHY = True
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,6 +18,7 @@ logging.basicConfig(
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         global REQUEST_COUNT
+        global APP_HEALTHY
 
         # Health endpoint
         if self.path == "/health":
@@ -24,16 +26,25 @@ class Handler(BaseHTTPRequestHandler):
 
             logging.info("Health check requested")
 
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(f"OK - Uptime: {uptime}s".encode())
+            if APP_HEALTHY:
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(f"OK - Uptime: {uptime}s".encode())
+            else:
+                logging.error("Application reported as UNHEALTHY")
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(b"UNHEALTHY")
+
             return
 
+            
         # Normal request handling
         REQUEST_COUNT += 1
 
-        if REQUEST_COUNT > 10:
-            logging.warning("High request volume detected")
+        if REQUEST_COUNT > 20:
+            logging.error("System marked unhealthy due to high request load")
+            APP_HEALTHY = False
 
         logging.info(f"Received GET request from {self.client_address}")
         logging.info(f"Total requests served: {REQUEST_COUNT}")

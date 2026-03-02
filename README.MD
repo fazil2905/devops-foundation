@@ -18,24 +18,25 @@ DevOps here is treated as systems thinking, not tool usage.
 - Containerized using Docker
 - CI pipeline builds a Docker image on every push
 - Failures intentionally injected and documented
-- Observability being added incrementally
+- Observability implemented incrementally
+- Health and degradation states simulated
 
 ---
 
 ## Current Phase
 
-### Phase 3 – Observe (Active)
+### Phase 4 – Trade-off Engineering (Active)
 
-The focus is now on understanding system behavior before automating decisions.
+The focus now shifts from building and observing the system to making deliberate engineering decisions under constraints.
 
-This phase introduces:
-- meaningful application logs
-- basic health signals
-- simple metrics
-- awareness of normal vs abnormal behavior
+This phase will introduce:
+- performance vs reliability trade-offs
+- cost vs stability considerations
+- operational decision documentation
+- controlled system changes with measurable impact
 
 Goal:
-Understand the system before trying to optimize or scale it.
+Engineer decisions, not just features.
 
 ---
 
@@ -52,7 +53,7 @@ Understand the system before trying to optimize or scale it.
   - builds a Docker image
 - Clear repository structure and documentation
 
-This phase established a stable baseline that could be safely evolved.
+This phase established a stable baseline.
 
 ---
 
@@ -69,46 +70,70 @@ Failures intentionally introduced included:
 - configuration and port mismatches
 - container crash scenarios
 
-For each failure:
-- detection method was observed
-- time to detect and recover was noted
-- root cause was identified
-- fixes and prevention ideas were documented
+Each failure was:
+- detected
+- analyzed
+- documented
+- resolved
+- optimized for prevention
 
-This phase built intuition around reliability and recovery.
+This phase built reliability intuition.
+
+---
+
+## Phase 3 – Observe (Completed)
+
+**Goal:** Understand system behavior before optimizing or scaling.
+
+Observability improvements included:
+- Structured logging with timestamps and levels
+- Request counter metric
+- Uptime tracking
+- Dedicated `/health` endpoint
+- Degradation detection via load thresholds
+- Automatic unhealthy state transition
+
+The system can now distinguish:
+- Healthy
+- Busy
+- Degrading
+- Unhealthy
+
+This phase established behavioral visibility.
 
 ---
 
 ## Evolution Plan
 
-This system evolves through four phases:
+This system evolves through four structured phases:
 
 1. **Build (Completed)**  
    Established a minimal, repeatable delivery system.
 
 2. **Inject Failure & Fix (Completed)**  
-   Studied failure modes, detection, and recovery.
+   Studied failure modes and recovery behavior.
 
-3. **Observe (Active)**  
-   Add logs, metrics, and simple signals to understand behavior.
+3. **Observe (Completed)**  
+   Implemented logs, metrics, health signals, and degradation detection.
 
-4. **Trade-off Engineering (Planned)**  
-   Make explicit decisions under constraints such as time, cost, and reliability.
+4. **Trade-off Engineering (Active)**  
+   Introduce constraints and document engineering decisions.
 
 ---
 
 ## Documentation Approach
-Each phase includes written documentation covering:
+Each phase includes structured documentation covering:
 - what changed
-- what failed
+- why it changed
 - how it was detected
-- how it was fixed
-- what was learned
+- impact on the system
+- trade-offs introduced
+- lessons learned
 
-The focus is on learning, not just building.
+The repository is designed as a learning artifact, not just a codebase.
 
 ---
 
 ## Final Mindset
 DevOps is not about tools.  
-It is about learning faster, failing safely, and making better decisions under uncertainty.
+It is about understanding systems, failing safely, observing clearly, and making better decisions under uncertainty.
