@@ -1,5 +1,9 @@
 import os
 import logging
+import time
+
+START_TIME = time.time()
+
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 REQUEST_COUNT = 0
@@ -16,14 +20,20 @@ class Handler(BaseHTTPRequestHandler):
 
         # Health endpoint
         if self.path == "/health":
+            uptime = int(time.time() - START_TIME)
+
             logging.info("Health check requested")
+
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(b"OK")
+            self.wfile.write(f"OK - Uptime: {uptime}s".encode())
             return
 
         # Normal request handling
         REQUEST_COUNT += 1
+
+        if REQUEST_COUNT > 10:
+            logging.warning("High request volume detected")
 
         logging.info(f"Received GET request from {self.client_address}")
         logging.info(f"Total requests served: {REQUEST_COUNT}")

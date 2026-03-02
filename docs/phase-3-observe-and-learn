@@ -184,3 +184,75 @@ The application now provides:
 - A health verification endpoint (Phase 3.3)
 
 The service is now monitorable by infrastructure systems such as load balancers and orchestrators.
+
+---
+
+## Phase 3.4 – Degradation Awareness (Uptime & Load Threshold)
+
+### Change Introduced
+Basic degradation detection was introduced into the application.
+
+The system now:
+- Tracks application uptime
+- Detects high request volume
+- Emits warning logs when request thresholds are exceeded
+- Returns uptime information via the `/health` endpoint
+
+---
+
+### Detection
+- Detected by: Manual testing during local runtime
+- Detection point: Console log output and `/health` endpoint
+- Signal:
+  - Uptime value increases over time
+  - Warning logs appear when request count exceeds threshold
+
+---
+
+### Time Metrics
+- Time to implement: ~15 minutes
+- Time to verify: ~10 minutes
+
+---
+
+### Root Cause
+Previously, the system could only report whether it was alive.
+
+There was no awareness of:
+- How long it had been running
+- Whether traffic load was increasing
+- When behavior was crossing normal boundaries
+
+This limited operational insight into performance trends.
+
+---
+
+### Fix Applied
+The application was enhanced to:
+
+- Track start time at boot
+- Calculate uptime dynamically
+- Introduce a request threshold warning
+- Emit WARNING-level logs when traffic exceeds defined limits
+
+The `/health` endpoint now includes uptime information.
+
+---
+
+### Prevention / Optimization
+- Monitor trends, not just binary status
+- Emit early warning signals before failure
+- Track uptime to understand lifecycle behavior
+- Detect degradation before system crash
+
+---
+
+### Outcome
+The system now provides:
+
+- Structured logs (Phase 3.1)
+- Runtime metrics (Phase 3.2)
+- Health endpoint (Phase 3.3)
+- Degradation awareness via uptime and load signals (Phase 3.4)
+
+The application can now distinguish between healthy, busy, and potentially degrading states.
