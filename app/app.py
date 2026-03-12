@@ -1,13 +1,17 @@
+from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 import logging
 import time
 
 START_TIME = time.time()
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
 
 REQUEST_COUNT = 0
 APP_HEALTHY = True
+
+RATE_LIMIT_WINDOW = 10
+RATE_LIMIT_MAX_REQUESTS = 5
+REQUEST_TIMESTAMPS = []
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,6 +23,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         global REQUEST_COUNT
         global APP_HEALTHY
+        global REQUEST_TIMESTAMPS
 
         # Health endpoint
         if self.path == "/health":
@@ -38,7 +43,27 @@ class Handler(BaseHTTPRequestHandler):
 
             return
 
-            
+
+        # Rate limiting
+        current_time = time.time()
+
+        REQUEST_TIMESTAMPS = [
+            t for t in REQUEST_TIMESTAMPS
+            if current_time - t < RATE_LIMIT_WINDOW
+        ]
+
+        if len(REQUEST_TIMESTAMPS) >= RATE_LIMIT_MAX_REQUESTS:
+            logging.warning("Rate limit exceeded")
+
+            self.send_response(429)
+            self.end_headers()
+            self.wfile.write(b"Too Many Requests")
+
+            return
+
+
+        REQUEST_TIMESTAMPS.append(current_time)
+
         # Normal request handling
         REQUEST_COUNT += 1
 
@@ -52,7 +77,6 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b"Hello from DevOps Foundation")
-    
 
 
 logging.info("Application starting...")
